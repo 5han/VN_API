@@ -1,0 +1,28 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+print "api.pl!\n";
+
+my $inputfile = "slice.conf";
+my $outputfile = "slice1.conf";
+my $string;
+
+# inputfileの読み込み
+open(my $file_in, $inputfile) or die ("ERROR");
+while(my $line = <$file_in>) {
+  $string .= $line;
+}
+close($file_in);
+
+# outputfileへの書き込み
+open(my $file_out, ">", $outputfile) or die ("ERROR");
+print OUT $string;
+close($file_out);
+
+# 外部コマンドの実行 cat slice.conf
+open(IN, "/bin/cat slice.conf |");
+while(my $line = <IN>) {
+  print $line;
+}
+close(IN);
+
