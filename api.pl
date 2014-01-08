@@ -1,16 +1,15 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-print "api.pl!\n";
 
-my $inputfile = "slice.conf";
+my $inputfile = "slice1.conf";
 
 # ハッシュの作成
 # my %hash;
 
 # inputfileの読み込み
-open(IN, $inputfile) or die ("ERROR: no inputfile!");
-while(my $line = <IN>) {
+open(DATAFILE, $inputfile) or die ("ERROR: no inputfile!");
+while(my $line = <DATAFILE>) {
   # 改行を削除
   chomp $line;
   # 正規表現にマッチするかチェックする
@@ -19,15 +18,23 @@ while(my $line = <IN>) {
     exit(0);
   }
 }
+close(DATAFILE);
+
+
+# 外部コマンドの実行 
+my $command0 = "sudo trema run ./routing-switch.rb -c test.conf |";
+print "command: " . $command0 . "\n";
+open(IN, $command0);
+while(my $line0 = <IN>) {
+  print $line0;
+}
 close(IN);
 
-
-my $command = "/bin/cat slice.conf |";
-# 外部コマンドの実行 
-open(IN, $command);
-print "you did this command: " . $command . "\n";
-while(my $line = <IN>) {
-  print $line;
+my $command1 = "sudo trema killall |";
+print "command: " . $command1 . "\n";
+open(IN, $command1);
+while(my $line1 = <IN>) {
+  print $line1;
 }
 close(IN);
 
