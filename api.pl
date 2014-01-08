@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-my $inputfile = "slice1.conf";
+my $inputfile = "test_slice.conf";
 
 # ハッシュの作成
 # my %hash;
@@ -22,7 +22,7 @@ close(DATAFILE);
 
 
 # 外部コマンドの実行 
-my $command0 = "sudo trema run ./routing-switch.rb -c test.conf |";
+my $command0 = "sudo trema run ./routing-switch.rb -c test_topology.conf |";
 print "command: " . $command0 . "\n";
 open(IN, $command0);
 while(my $line0 = <IN>) {

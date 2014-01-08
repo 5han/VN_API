@@ -8,7 +8,7 @@ class Slice
   attr_reader :mac_to_slice
   def initialize
     @mac_to_slice = Hash.new { [].freeze }
-    @input_file = "slice.conf"
+    @input_file = "test_slice.conf"
     create_vn_from_file
   end
 
@@ -23,7 +23,8 @@ class Slice
       # print "slice_num: " + slice_num + "\n"
       line2 = dev[1].split("}")[0] 
       # line2 = *,...,*
-      host = line2.split(",") 
+      host = line2.split(",")
+#print# host 
       for var in host do
         @mac_to_slice[var] = slice_num
       end 
