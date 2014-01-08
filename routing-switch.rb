@@ -3,7 +3,7 @@ $LOAD_PATH.unshift File.expand_path(File.join File.dirname(__FILE__), 'lib')
 
 require 'rubygems'
 require 'bundler/setup'
-require 'sliceinfo'
+require 'slice'
 require 'command-line'
 require 'topology'
 require 'trema'
@@ -18,13 +18,13 @@ class RoutingSwitch < Controller
   FLOWHARDTIMEOUT = 300
 
   def start
-    @host_to_slice = {}
-    @host_number = {}
+    @slice = Slice.new
     @fdb = {}
     @adb = {}
     @command_line = CommandLine.new
     @command_line.parse(ARGV.dup)
     @topology = Topology.new(@command_line)
+#    maketable
   end
 
   def switch_ready(dpid)
@@ -74,7 +74,7 @@ class RoutingSwitch < Controller
 
   private
   def same_slice?(dpid,packet_in)
-    return @host_to_slice[@host_number[packet_in.macsa]] == @host_to_slice[@host_number[packet_in.macda]]  
+    return @slice.mac_to_slice[packet_in.macsa.to_s] == @slice.mac_to_slice[packet_in.macda.to_s]  
   end
 
   def learn_new_host_fdb(dpid, packet_in)
@@ -165,6 +165,17 @@ class RoutingSwitch < Controller
       actions: SendOutPort.new(port)
     )
   end
+
+  # def maketable
+  #   @mac_to_slice["00:00:00:00:00:01"]=1;
+  #   @mac_to_slice["00:00:00:00:00:02"]=1;
+  #   @mac_to_slice["00:00:00:00:00:03"]=1;
+  #   @mac_to_slice["00:00:00:00:00:04"]=1;
+  #   @mac_to_slice["00:00:00:00:00:05"]=2;
+  #   @mac_to_slice["00:00:00:00:00:06"]=2;
+  #   @mac_to_slice["00:00:00:00:00:07"]=2;
+  #   @mac_to_slice["00:00:00:00:00:08"]=2;
+  # end
 end
 
 ### Local variables:

@@ -16,7 +16,7 @@ close($file_in);
 
 # outputfileへの書き込み
 open(my $file_out, ">", $outputfile) or die ("ERROR");
-print OUT $string;
+print $file_out $string;
 close($file_out);
 
 # 外部コマンドの実行 cat slice.conf
