@@ -4,10 +4,10 @@ require 'rubygems'
 #
 # information of vertual slice
 #
-class SliceInfo
-  attr_reader :vn
+class Slice
+  attr_reader :mac_to_slice
   def initialize
-    @vn = Hash.new { [].freeze }
+    @mac_to_slice = Hash.new { [].freeze }
     @input_file = "slice.conf"
     create_vn_from_file
   end
@@ -25,11 +25,11 @@ class SliceInfo
       # line2 = *,...,*
       host = line2.split(",") 
       for var in host do
-        @vn[var] = slice_num
+        @mac_to_slice[var] = slice_num
       end 
     end
     f.close
-    @vn.each{|key, value|
+    @mac_to_slice.each{|key, value|
       print "(" + key + ", " + value + ")\n"
     }
   end
