@@ -3,7 +3,7 @@ $LOAD_PATH.unshift File.expand_path(File.join File.dirname(__FILE__), 'lib')
 
 require 'rubygems'
 require 'bundler/setup'
-
+require 'sliceinfo'
 require 'command-line'
 require 'topology'
 require 'trema'
@@ -18,6 +18,8 @@ class RoutingSwitch < Controller
   FLOWHARDTIMEOUT = 300
 
   def start
+    @host_to_slice = {}
+    @host_number = {}
     @fdb = {}
     @adb = {}
     @command_line = CommandLine.new
@@ -52,6 +54,7 @@ class RoutingSwitch < Controller
 
   def packet_in(dpid, packet_in)
     if packet_in.ipv4?
+      return unless same_slice? dpid, packet_in
       add_host_by_packet_in dpid, packet_in
       learn_new_host_fdb dpid, packet_in
       dest_host = @fdb[packet_in.macda]
@@ -70,6 +73,9 @@ class RoutingSwitch < Controller
   end
 
   private
+  def same_slice?(dpid,packet_in)
+    return @host_to_slice[@host_number[packet_in.macsa]] == @host_to_slice[@host_number[packet_in.macda]]  
+  end
 
   def learn_new_host_fdb(dpid, packet_in)
     unless @fdb.key?(packet_in.macsa)
