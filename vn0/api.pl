@@ -23,21 +23,19 @@ if(@ARGV == 2){
   close(DATAFILE);
 
   # 外部コマンドの実行 
+  $SIG{PIPE} = 'IGNORE';
   my $command0 = "sudo trema run ./routing-switch.rb -c " . $conf_file . " |";
   print "command: " . $command0 . "\n";
-  open(IN, $command0);
-  while(my $line0 = <IN>) {
-    print $line0;
+  open(IN, $command0) || die "can't fork: $!";
+  while(<IN>) {
+    print;
   }
-  close(IN);
+  close(IN) || die "command end!";
 
-  my $command1 = "sudo trema killall |";
-  print "command: " . $command1 . "\n";
-  open(IN, $command1);
-  while(my $line1 = <IN>) {
-    print $line1;
-  }
-  close(IN);
+  my $command1 = "sudo trema killall";
+  system($command1);
+
+
 }else{
   print "usage: perl api.pl <conf_file> <slice_file>\n"
 }
