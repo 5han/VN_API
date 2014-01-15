@@ -22,7 +22,8 @@ close(DATAFILE);
 
 
 # 外部コマンドの実行 
-my $command0 = "sudo trema run ./routing-switch.rb -c test_topology.conf |";
+ my $command0 = "sudo trema run \"./routing-switch.rb graphviz /tmp/topology.png\" -c test_topology.conf |";
+#my $command0 = "sudo trema run ./routing-switch.rb -c test_topology.conf |";
 print "command: " . $command0 . "\n";
 open(IN, $command0);
 while(my $line0 = <IN>) {
