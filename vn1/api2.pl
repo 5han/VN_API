@@ -10,13 +10,13 @@ if(@ARGV == 2){
   $slice_file = $ARGV[1];
 }
 if(@ARGV == 3){
-  my $yoko = $ARGV[0];
-  my $tate = $ARGV[1];
+  my $tate = $ARGV[0];
+  my $yoko = $ARGV[1];
   my $slice_unit = $ARGV[2];
-  my $com1 = "./make_conffile " . $yoko . "," . $tate;
+  my $com1 = "./make_topology " . $tate . " " . $yoko;
   print $com1 . "\n";
-  system($com1) || die ("ERROR: cannot do ./make_conffile");
-  my $com2 = "./make_slicefile " . $yoko . " " . $tate . " " . $slice_unit;
+  system($com1) || die ("ERROR: cannot do ./make_topology");
+  my $com2 = "./make_slicefile " . $tate . " " . $yoko . " " . $slice_unit;
   print $com2 . "\n";
   system($com2) || die ("ERROR: cannot do ./make_slicefile");
 
@@ -25,7 +25,7 @@ if(@ARGV == 3){
 }
 if(@ARGV == 0){
   print "usage: perl api.pl <topology_file> <slice_file>\n";
-  print "usage: perl api.pl <tate> <yoko> <slice_unit>\n";
+  print "usage: perl api.pl <height_nodenum> <width_nodenum> <slice_unitnum>\n";
   exit(0);
 }
 
