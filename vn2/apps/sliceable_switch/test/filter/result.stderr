@@ -1,5 +1,0 @@
-Usage:
-  filter list
-  filter show [FILTER_ID]
-  filter add [FILTER_ID] [FILTER_CRITERIA]
-  filter delete [FILTER_ID] [FILTER_CRITERIA]
