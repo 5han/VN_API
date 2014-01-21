@@ -55,6 +55,8 @@ class RoutingSwitch < Controller
 
   def packet_in(dpid, packet_in)
     if packet_in.ipv4?
+      load 'slice.rb'
+      @slice = Slice.new
       return unless same_slice? dpid, packet_in
       add_host_by_packet_in dpid, packet_in
       learn_new_host_fdb dpid, packet_in
