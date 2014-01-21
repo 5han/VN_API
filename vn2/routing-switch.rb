@@ -3,7 +3,6 @@ $LOAD_PATH.unshift File.expand_path(File.join File.dirname(__FILE__), 'lib')
 
 require 'rubygems'
 require 'bundler/setup'
-require 'slice'
 require 'command-line'
 require 'topology'
 require 'trema'
@@ -18,6 +17,7 @@ class RoutingSwitch < Controller
   FLOWHARDTIMEOUT = 300
 
   def start
+    load 'slice.rb'
     @slice = Slice.new
     @fdb = {}
     @adb = {}
@@ -54,6 +54,9 @@ class RoutingSwitch < Controller
 
   def packet_in(dpid, packet_in)
     if packet_in.ipv4?
+      puts "aa"
+      load 'slice.rb'
+      @slice = Slice.new
       return unless same_slice? dpid, packet_in
       add_host_by_packet_in dpid, packet_in
       learn_new_host_fdb dpid, packet_in
