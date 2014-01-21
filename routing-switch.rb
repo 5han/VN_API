@@ -3,11 +3,11 @@ $LOAD_PATH.unshift File.expand_path(File.join File.dirname(__FILE__), 'lib')
 
 require 'rubygems'
 require 'bundler/setup'
-require 'slice'
 require 'command-line'
 require 'topology'
 require 'trema'
 require 'trema-extensions/port'
+require 'thread'
 
 #
 # Routing Switch using LLDP to collect network topology information.
@@ -18,6 +18,7 @@ class RoutingSwitch < Controller
   FLOWHARDTIMEOUT = 300
 
   def start
+    load 'slice.rb'
     @slice = Slice.new
     @fdb = {}
     @adb = {}
@@ -74,7 +75,14 @@ class RoutingSwitch < Controller
 
   private
   def same_slice?(dpid,packet_in)
-    return @slice.mac_to_slice[packet_in.macsa.to_s] == @slice.mac_to_slice[packet_in.macda.to_s]  
+    source = @slice.mac_to_slice[packet_in.macsa.to_s]
+    dest = @slice.mac_to_slice[packet_in.macda.to_s]
+    source.each do |x|
+      if dest.include?(x)
+        return true
+      end
+    end
+    return false
   end
 
   def learn_new_host_fdb(dpid, packet_in)
